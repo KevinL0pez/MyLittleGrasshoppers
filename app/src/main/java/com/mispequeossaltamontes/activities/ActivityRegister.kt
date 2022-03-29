@@ -3,6 +3,7 @@ package com.mispequeossaltamontes.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.widget.Button
 import android.widget.EditText
@@ -28,12 +29,15 @@ class ActivityRegister : AppCompatActivity() {
     var campoCuatro: EditText? = null
     var campoCinco: EditText? = null
 
-    var operaciones:Operaciones?=null
+    var operaciones: Operaciones? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        var operaciones: Operaciones?=null
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
+
+        var bundle: Bundle? =this.intent.extras
+        operaciones= bundle?.getSerializable("operaciones") as Operaciones?
 
         campoNombre = findViewById(R.id.txtNombre)
         campoEdad = findViewById<EditText?>(R.id.txtEdad)
@@ -51,21 +55,20 @@ class ActivityRegister : AppCompatActivity() {
         campoCuatro = findViewById(R.id.txtCuartaNotaUno)
         campoCinco = findViewById(R.id.txtQuintaNotaUno)
 
-        val miBoton: Button = findViewById(R.id.btnSalirRegistro)
-        miBoton.setOnClickListener { devolverResultados() }
+//        val miBoton: Button = findViewById(R.id.btnSalirRegistro)
+//        miBoton.setOnClickListener { salio() }
 
         val miBotonDos: Button = findViewById(R.id.btnEntrarRegistro)
         miBotonDos.setOnClickListener { validarDatos() }
 
     }
 
+//    private fun salio() {
+//
+//    }
+
     private fun validarDatos() {
         //Se instancia la clase operaciones
-        var bundle: Bundle? =this.intent.extras
-        operaciones= bundle?.getSerializable("operaciones") as Operaciones?
-        campoDocumento=findViewById(R.id.txtDocumento)
-        campoNombre=findViewById(R.id.txtNombre)
-        campoEdad=findViewById(R.id.txtEdad)
 
         var campoPrimeraNota = findViewById<EditText>(R.id.txtPrimeraNotaUno).text.toString()
         var campoSegundaNota = findViewById<EditText>(R.id.txtSegundaNotaUno).text.toString()
@@ -175,6 +178,7 @@ class ActivityRegister : AppCompatActivity() {
     ) {
 
         var est: Estudiante = Estudiante()
+        var bundle:Bundle? = this.intent.extras
 
         est.documento= campoDocumento?.text.toString()
         est.nombre=campoNombre?.text.toString()
@@ -182,11 +186,11 @@ class ActivityRegister : AppCompatActivity() {
         est.direccion=campoDireccion?.text.toString()
         est.telefono=campoTelefono?.text.toString()
 
-        est.materia1=campoPrimera?.text.toString()
-        est.materia2=campoSegunda?.text.toString()
-        est.materia3=campoTercera?.text.toString()
-        est.materia4=campoCuarta?.text.toString()
-        est.materia5=campoQuinta?.text.toString()
+        est.materia1 = campoPrimera?.text.toString()
+        est.materia2 = campoSegunda?.text.toString()
+        est.materia3 = campoTercera?.text.toString()
+        est.materia4 = campoCuarta?.text.toString()
+        est.materia5 = campoQuinta?.text.toString()
 
         est.nota1= notaUno
         est.nota2= notaDos
@@ -194,36 +198,61 @@ class ActivityRegister : AppCompatActivity() {
         est.nota4= notaCuatro
         est.nota5= notaCinco
 
-        est.promedio = operaciones!!.calcularPromedio(est)
+        var contPierde: Int = 0
+        var contGana: Int = 0
+        var contRecupera: Int = 0
+        var mensaje: String = ""
+        var prom: Double = 0.0
+
+        prom=(est.nota1+est.nota2+est.nota3+est.nota4+est.nota5)/5
+
+        if (prom <= 2.5) {
+            contPierde += 1
+            Log.i("Recupera", bundle?.getInt("pierde").toString())
+            mensaje =  "Pierde la materia"
+
+        } else if (prom < 3.5 && prom >= 2.5){
+            contRecupera += 1
+            Log.i("Recupera", bundle?.getInt("recupera").toString())
+            mensaje = "Puede recuperar"
+
+        } else {
+            contGana += 1
+            Log.i("Gana", bundle?.getInt("gana").toString())
+            mensaje = "Gana la materia"
+        }
+
+        contGana += bundle?.getInt("gana")!!.toInt()
+        contRecupera += bundle?.getInt("recupera")!!.toInt()
+        contPierde += bundle?.getInt("pierde")!!.toInt()
+        est.conclusion = mensaje
+        est.pierde = contPierde
+        est.recupera = contRecupera
+        est.gana = contGana
+        est.promedio = prom
+//        est.promedio = operaciones!!.calcularPromedio(est)
         operaciones?.registrarEstudiante(est)
         operaciones?.imprimirListaEstudiantes()
-        limpiarCampos()
+
+//        var miBundle:Bundle=Bundle()
+//        miBundle.putSerializable("est", est)
+//        intent.putExtras(miBundle)
 
         intent= Intent(this,ActivityPrintDates::class.java)
-        val miBundle:Bundle= Bundle()
-        miBundle.putSerializable("est", est)
-        intent.putExtras(miBundle)
+        intent.putExtra("ganadores", contGana)
+        intent.putExtra("recuperadores", contRecupera)
+        intent.putExtra("perdedores", contPierde)
         startActivity(intent)
 
     }
 
-    private fun limpiarCampos() {
-        campoNombre?.setText("")
-        campoEdad?.setText("")
-        campoDireccion?.setText("")
-        campoDocumento?.setText("")
-        campoTelefono?.setText("")
-        campoPrimera?.setText("")
-        campoSegunda?.setText("")
-        campoTercera?.setText("")
-        campoCuarta?.setText("")
-        campoQuinta?.setText("")
-        campoUno?.setText("")
-        campoDos?.setText("")
-        campoTres?.setText("")
-        campoCuatro?.setText("")
-        campoCinco?.setText("")
-
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode==KeyEvent.KEYCODE_BACK){
+            Toast.makeText(this, "Se cierra el Activity Register", Toast.LENGTH_SHORT).show()
+            devolverResultados()
+            startActivity(Intent(this, MainActivity::class.java))
+        }
+        return super.onKeyDown(keyCode, event)
     }
 
     private fun devolverResultados() {
@@ -236,13 +265,5 @@ class ActivityRegister : AppCompatActivity() {
         setResult(RESULT_OK,miIntent)
     }
 
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if (keyCode==KeyEvent.KEYCODE_BACK){
-            Toast.makeText(this, "Se cierra el registro Activity", Toast.LENGTH_SHORT).show()
-            devolverResultados()
-            finish()
-        }
-        return super.onKeyDown(keyCode, event)
-    }
 
 }

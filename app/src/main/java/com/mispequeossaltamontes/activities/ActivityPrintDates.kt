@@ -1,7 +1,9 @@
 package com.mispequeossaltamontes.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import com.mispequeossaltamontes.R
@@ -12,12 +14,15 @@ class ActivityPrintDates : AppCompatActivity() {
         setContentView(R.layout.activity_print_dates)
 
         val campoMensaje = findViewById<TextView>(R.id.txtResultado)
-
         var miBundle:Bundle? = this.intent.extras
 
         if (miBundle != null) {
 
-            campoMensaje.text = "${miBundle.getSerializable("est")}"
+            Log.i("Envio", "${miBundle.getInt("ganadores")}")
+            campoMensaje.text = "${miBundle.getSerializable("est")} \n" +
+                    "Ganadores: ${miBundle.getInt("ganadores")} \n" +
+                    "Recuperadores: ${miBundle.getInt("recuperadores")} \n" +
+                    "Perdedores: ${miBundle.getInt("perdedores")}"
 
         }
 
@@ -26,6 +31,11 @@ class ActivityPrintDates : AppCompatActivity() {
     }
 
     private fun onClick() {
-        finish()
+        var miBundle:Bundle? = this.intent.extras
+        var intent = Intent(this,ActivityRegister::class.java)
+        intent.putExtra("gana", miBundle?.getInt("ganadores"))
+        intent.putExtra("recupera", miBundle?.getInt("recuperadores"))
+        intent.putExtra("pierde", miBundle?.getInt("perdedores"))
+        startActivity(intent)
     }
 }

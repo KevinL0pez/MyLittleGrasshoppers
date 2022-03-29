@@ -31,22 +31,6 @@ class Estudiante : Serializable {
 
     var promedio:Double=0.0
 
-//    private fun validarDatos() {
-//
-//        if (documento.equals(null) || documento.equals("") || edad.equals(null) || edad.equals("")
-//            || telefono.equals(null) || telefono.equals("") || direccion.equals(null) || direccion.equals("")) {
-//
-//            documento = "N/E"
-//            edad = 0
-//            telefono = "N/E"
-//            direccion = "N/E"
-//
-//        } else {
-//            toString()
-//        }
-//
-//    }
-
     override fun toString(): String {
         return "Estudiante \n " +
                 "documento='$documento', nombre='$nombre'," +
@@ -61,6 +45,4 @@ class Estudiante : Serializable {
                 "Recuperan: $recupera \n" +
                 "Conclusión: $conclusion \n"
     }
-
-
 }

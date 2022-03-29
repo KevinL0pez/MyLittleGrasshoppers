@@ -108,7 +108,8 @@
                     android:layout_marginLeft="65dp"
                     android:singleLine="true"
                     android:layout_marginRight="20dp"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:maxLength="2"/>
 
             </TableRow>
 
