@@ -52,7 +52,7 @@ class ActivityStatistics : AppCompatActivity() {
                 estPoRecuperar +=1
             }
         }
-        campoRecuperar?.setText("Estudiantes con posibilidad de recuperar:  ${estPoRecuperar.toString()}")
+        campoRecuperar?.setText("Estudiantes con posibilidad de recuperar: ${estPoRecuperar.toString()}")
 
     }
 

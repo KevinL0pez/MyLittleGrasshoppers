@@ -16,20 +16,50 @@
             android:id="@+id/txtAyuda"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Ayuda"
             android:layout_marginTop="20dp"
-            android:textSize="40dp"
-            android:textAlignment="center"/>
+            android:text="Ayuda"
+            android:textAlignment="center"
+            android:textColor="#673AB7"
+            android:textSize="40dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="15dp"
+            android:gravity="center_vertical"
+            android:text="Botón Registro: Este botón permite registrar los datos del estudiante, así como también sus materias con el respectivo promedio. A su vez cuando se registre el estudiante se mostrará la información del estudiante con un mensaje de si Gana, Pierde o Recupera la materia."
+            android:textColor="#3F51B5"
+            android:textSize="20dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="15dp"
+            android:textColor="#3F51B5"
+            android:text="Botón Estadísticas:  Este botón nos enviará a una pantalla donde nosmostrará la cantidad de estudiantes que Ganan, Pierden y Recuperan la materia."
+            android:textSize="20dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="15dp"
+            android:textColor="#3F51B5"
+            android:text="Botón Ayuda: Este botón nos enviará a esta pantalla la cual nos presentará la información acerca de las funcionalidades de cada botón."
+            android:textSize="20dp" />
 
     </LinearLayout>
-
-
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:gravity="bottom"
+        android:gravity="center"
         android:layout_marginBottom="20dp">
 
         <Button

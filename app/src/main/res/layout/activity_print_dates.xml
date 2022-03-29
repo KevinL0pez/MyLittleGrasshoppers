@@ -7,8 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".activities.ActivityPrintDates"
-
-    android:layout_margin="20dp">
+    android:layout_margin="20dp" >
 
     <TextView
         android:layout_width="match_parent"

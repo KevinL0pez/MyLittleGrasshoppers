@@ -12,8 +12,6 @@ import com.mispequeossaltamontes.clases.Operaciones
 
 class ActivityPrintDates : AppCompatActivity() {
     var btnInicio:Button?=null
-    var estudiante: Estudiante?= null
-    var operaciones: Operaciones? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_print_dates)
@@ -35,11 +33,8 @@ class ActivityPrintDates : AppCompatActivity() {
                     false -> campoEstado?.setText("Sin posibilidades de recuperar la Materia")
                 }
             }
-
         }
         btnInicio?.setOnClickListener { startActivity(Intent(this, MainActivity::class.java)) }
 
     }
-
-
 }

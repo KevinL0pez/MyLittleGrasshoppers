@@ -31,7 +31,7 @@ class ActivityRegister : AppCompatActivity() {
     var campoCuatro: EditText? = null
     var campoCinco: EditText? = null
 
-    var estudiante:Estudiante ?= null
+    var estudiante:Estudiante? = null
     var operaciones: Operaciones? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,10 +61,6 @@ class ActivityRegister : AppCompatActivity() {
         miBotonDos.setOnClickListener { validarDatos() }
 
     }
-
-//    private fun salio() {
-//
-//    }
 
     private fun validarDatos() {
         //Se instancia la clase operaciones
