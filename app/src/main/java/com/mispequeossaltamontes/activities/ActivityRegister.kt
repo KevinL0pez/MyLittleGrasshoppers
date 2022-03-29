@@ -1,5 +1,6 @@
 package com.mispequeossaltamontes.activities
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,6 +11,7 @@ import android.widget.EditText
 import android.widget.Toast
 import com.mispequeossaltamontes.R
 import com.mispequeossaltamontes.clases.Estudiante
+import com.mispequeossaltamontes.clases.Globals
 import com.mispequeossaltamontes.clases.Operaciones
 
 class ActivityRegister : AppCompatActivity() {
@@ -29,6 +31,7 @@ class ActivityRegister : AppCompatActivity() {
     var campoCuatro: EditText? = null
     var campoCinco: EditText? = null
 
+    var estudiante:Estudiante ?= null
     var operaciones: Operaciones? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,8 +39,7 @@ class ActivityRegister : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        var bundle: Bundle? =this.intent.extras
-        operaciones= bundle?.getSerializable("operaciones") as Operaciones?
+        operaciones = Globals.operaciones
 
         campoNombre = findViewById(R.id.txtNombre)
         campoEdad = findViewById<EditText?>(R.id.txtEdad)
@@ -54,9 +56,6 @@ class ActivityRegister : AppCompatActivity() {
         campoTres = findViewById(R.id.txtTerceraNotaUno)
         campoCuatro = findViewById(R.id.txtCuartaNotaUno)
         campoCinco = findViewById(R.id.txtQuintaNotaUno)
-
-//        val miBoton: Button = findViewById(R.id.btnSalirRegistro)
-//        miBoton.setOnClickListener { salio() }
 
         val miBotonDos: Button = findViewById(R.id.btnEntrarRegistro)
         miBotonDos.setOnClickListener { validarDatos() }
@@ -177,93 +176,58 @@ class ActivityRegister : AppCompatActivity() {
         notaCinco: Double
     ) {
 
-        var est: Estudiante = Estudiante()
-        var bundle:Bundle? = this.intent.extras
+        estudiante=Estudiante()
 
-        est.documento= campoDocumento?.text.toString()
-        est.nombre=campoNombre?.text.toString()
-        est.edad=campoEdad?.text.toString().toInt()
-        est.direccion=campoDireccion?.text.toString()
-        est.telefono=campoTelefono?.text.toString()
+        estudiante?.documento= campoDocumento?.text.toString()
+        estudiante?.nombre=campoNombre?.text.toString()
+        estudiante?.edad=campoEdad?.text.toString().toInt()
+        estudiante?.direccion=campoDireccion?.text.toString()
+        estudiante?.telefono=campoTelefono?.text.toString()
 
-        est.materia1 = campoPrimera?.text.toString()
-        est.materia2 = campoSegunda?.text.toString()
-        est.materia3 = campoTercera?.text.toString()
-        est.materia4 = campoCuarta?.text.toString()
-        est.materia5 = campoQuinta?.text.toString()
+        estudiante?.materia1 = campoPrimera?.text.toString()
+        estudiante?.materia2 = campoSegunda?.text.toString()
+        estudiante?.materia3 = campoTercera?.text.toString()
+        estudiante?.materia4 = campoCuarta?.text.toString()
+        estudiante?.materia5 = campoQuinta?.text.toString()
 
-        est.nota1= notaUno
-        est.nota2= notaDos
-        est.nota3= notaTres
-        est.nota4= notaCuatro
-        est.nota5= notaCinco
+        estudiante?.nota1 = notaUno
+        estudiante?.nota2 = notaDos
+        estudiante?.nota3 = notaTres
+        estudiante?.nota4 = notaCuatro
+        estudiante?.nota5 = notaCinco
 
-        var contPierde: Int = 0
-        var contGana: Int = 0
-        var contRecupera: Int = 0
-        var mensaje: String = ""
-        var prom: Double = 0.0
+        estudiante?.promedio=operaciones!!.calcularPromedio(estudiante!!)
 
-        prom=(est.nota1+est.nota2+est.nota3+est.nota4+est.nota5)/5
+        if ((estudiante!!.promedio) >= 3.5 ){
+            estudiante?.estado="Aprobado"
 
-        if (prom <= 2.5) {
-            contPierde += 1
-            Log.i("Recupera", bundle?.getInt("pierde").toString())
-            mensaje =  "Pierde la materia"
-
-        } else if (prom < 3.5 && prom >= 2.5){
-            contRecupera += 1
-            Log.i("Recupera", bundle?.getInt("recupera").toString())
-            mensaje = "Puede recuperar"
-
-        } else {
-            contGana += 1
-            Log.i("Gana", bundle?.getInt("gana").toString())
-            mensaje = "Gana la materia"
+        } else{
+            estudiante?.estado="Reprobado"
         }
 
-        contGana += bundle?.getInt("gana")!!.toInt()
-        contRecupera += bundle?.getInt("recupera")!!.toInt()
-        contPierde += bundle?.getInt("pierde")!!.toInt()
-        est.conclusion = mensaje
-        est.pierde = contPierde
-        est.recupera = contRecupera
-        est.gana = contGana
-        est.promedio = prom
-//        est.promedio = operaciones!!.calcularPromedio(est)
-        operaciones?.registrarEstudiante(est)
+        if(estudiante!!.promedio >= 2.5 ){
+
+            if (estudiante!!.promedio >= 3.5) {
+                estudiante?.poRecuperar = false
+            } else{
+                estudiante?.poRecuperar = true
+            }
+
+        } else {
+            estudiante?.poRecuperar=false
+        }
+
+        operaciones?.registrarEstudiante(estudiante!!)
         operaciones?.imprimirListaEstudiantes()
 
-//        var miBundle:Bundle=Bundle()
-//        miBundle.putSerializable("est", est)
-//        intent.putExtras(miBundle)
-
-        intent= Intent(this,ActivityPrintDates::class.java)
-        intent.putExtra("ganadores", contGana)
-        intent.putExtra("recuperadores", contRecupera)
-        intent.putExtra("perdedores", contPierde)
+        val miBundle:Bundle = Bundle()
+        miBundle.putString("estado", estudiante?.estado)
+        miBundle.putBoolean("poRecuperar", estudiante!!.poRecuperar)
+        miBundle.putSerializable("est", estudiante)
+        val intent=Intent(this, ActivityPrintDates::class.java)
+        intent.putExtras(miBundle)
         startActivity(intent)
 
     }
-
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if (keyCode==KeyEvent.KEYCODE_BACK){
-            Toast.makeText(this, "Se cierra el Activity Register", Toast.LENGTH_SHORT).show()
-            devolverResultados()
-            startActivity(Intent(this, MainActivity::class.java))
-        }
-        return super.onKeyDown(keyCode, event)
-    }
-
-    private fun devolverResultados() {
-        var miIntent: Intent = Intent()
-        miIntent.putExtra("resultado","Registro exitoso")
-        var miBundle:Bundle= Bundle()
-        miBundle.putSerializable("objetoOperaciones",operaciones)
-        miIntent.putExtras(miBundle)
-        //miIntent.putExtra("obj",operaciones)
-        setResult(RESULT_OK,miIntent)
-    }
-
 
 }

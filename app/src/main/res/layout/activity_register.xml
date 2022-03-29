@@ -328,15 +328,6 @@
                     android:gravity="center"
                     android:text="Registar Notas" />
 
-                <Button
-                    android:id="@+id/btnSalirRegistro"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:gravity="center"
-                    android:text="Volver al Menú" />
-
             </TableRow>
 
 

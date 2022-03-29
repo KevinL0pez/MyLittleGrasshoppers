@@ -4,10 +4,6 @@ import java.io.Serializable
 
 class Estudiante : Serializable {
 
-    var conclusion: String = ""
-    var pierde: Int = 0
-    var gana: Int = 0
-    var recupera: Int = 0
     var documento: String=""
     var nombre: String=""
     var edad: Int=0
@@ -26,23 +22,22 @@ class Estudiante : Serializable {
     var nota4: Double=0.0
     var nota5: Double=0.0
 
-    //Este mapa es opcional, es un ejemplo por si se va a gestionar las notas de forma independiente
-//    var mapaMaterias= mutableMapOf<String,Materia>()
-
     var promedio:Double=0.0
+    var estado:String=""
+    var poRecuperar:Boolean=false
 
     override fun toString(): String {
-        return "Estudiante \n " +
-                "documento='$documento', nombre='$nombre'," +
-                "Edad: $edad, Telefono: $telefono Direccion: $direccion" +
-                "Materia1: $materia1, Materia2: $materia2 " +
-                "Materia3: $materia3, Materia4: $materia4 \n " +
-                "Materia5: $materia5, \n" +
-                "Nota1: $nota1, nota2: $nota2, nota3: $nota3, nota4: $nota4, Nota5: $nota5 \n" +
-                "Promedio: $promedio) \n" +
-                "Pierden: $pierde \n" +
-                "Ganan: $gana \n" +
-                "Recuperan: $recupera \n" +
-                "Conclusión: $conclusion \n"
+        return  "Nombre: $nombre \n" +
+                "Documento: $documento " +
+                "Edad: $edad \n" +
+                "Telefono: $telefono \n" +
+                "Direccion: $direccion \n" +
+                "Materia1: $materia1 - Nota1: $nota1\n" +
+                "Materia2: $materia2 - Nota2: $nota2\n" +
+                "Materia3: $materia3 - Nota3: $nota3\n" +
+                "Materia4: $materia4 - Nota4: $nota4\n" +
+                "Materia5: $materia5 - Nota5: $nota5\n" +
+                "Promedio: $promedio \n\n" +
+                "Estado: $estado"
     }
 }
